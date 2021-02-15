@@ -16,8 +16,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const TaskList = (props) => {
     const dispatch = useDispatch()
-    const tasks = useSelector(state => state)
-
+    const tasks = useSelector(state => state.tasks) 
+    console.log(tasks)
     const updateTask = (e, id) => {
         console.log('toggling completed', e.target.checked)
         dispatch({
@@ -32,24 +32,28 @@ const TaskList = (props) => {
     const tasksRefreshed = () => console.log('refreshed tasks', tasks)
     useEffect(()=>(
         tasksRefreshed()
+        
     ),[tasks])
 
     return(
         <div>
 
-        { 
+        {  tasks ? 
             tasks.map(t => 
                 <h4 key={t.id} style={{display: 'flex'}}>
                     <input 
                         type='checkbox' 
-                        checked={t.isComplete} 
+                        checked={t.isCompleted} 
                         onClick={(e)=>updateTask(e, t.id)}
                         style={{margin:'5px 15px'}}
                     />
 
                     {t.description}
+                    {/* {JSON.stringify(t)}  */}
                 </h4>
             )
+            :
+            JSON.stringify(tasks)
         }
 
         </div>
